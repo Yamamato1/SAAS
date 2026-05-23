@@ -1,22 +1,18 @@
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
-const http = require('http');
-const { Server } = require('socket.io');
+const app = express();
 
-const app = require('./app');
+app.use(cors());
+app.use(express.json());
 
-const socketHandler = require('./sockets/socketHandler');
-
-const server = http.createServer(app);
-
-const io = new Server(server, {
-  cors: {
-    origin: '*'
-  }
+app.get("/", (req, res) => {
+  res.send("SAAS Backend Running...");
 });
 
-socketHandler(io);
+const PORT = process.env.PORT || 5000;
 
-server.listen(process.env.PORT, () => {
-  console.log(`SomTech backend running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
